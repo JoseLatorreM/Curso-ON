@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soporte - Problemas Comunes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #a5b6c8;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #4a90e2;
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+            font-size: 1.2em;
+        }
+
+        .problem {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #f9fafb;
+        }
+
+        .solution {
+            font-size: 0.95em;
+            color: #555;
+            margin-top: 10px;
+        }
+        .menu-container {
+            background-color: #d6d7e3;
+            padding: 10px 0;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-container ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        .menu-container ul li a {
+            text-decoration: none;
+            color: #6b9080;
+            background-color: #f9fafb;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .menu-container ul li a:hover {
+            background-color: #a3d2ca;
+            color: white;
+        }
+        
+        .auth-buttons a {
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            background-color: #9ac7cc;
+            color: rgb(6, 6, 6);
+            transition: background-color 0.3s ease;
+        }
+
+        .auth-buttons a:hover {
+            background-color: #92c4b4;
+        }
+
+    .btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        text-decoration: none;
+        display: inline-block;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .btn-primary {
+        background-color: #92c4b4;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #6b9080;
+    }
+
+    .btn-outline-primary {
+        background-color: transparent;
+        color: #92c4b4;
+        border: 1px solid #92c4b4;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #92c4b4;
+        color: white;
+    }
+
+    .navbar-brand {
+            font-weight: bold;
+            color: #0056b3 !important;
+        }
+
+        .navbar-nav .nav-link {
+            color: #495057 !important;
+        }
+
+        .dropdown-menu {
+            right: 0;
+            left: auto;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'MenuUsuario'%}">Curso O-N</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'mostrar_cursos' %}">Cursos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'Soporte' %}">Soporte</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    {% if request.session.user_name and request.session.user_lastname %}
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ request.session.user_name }} {{ request.session.user_lastname }}
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="{% url 'cerrar_sesion' %}">Cerrar sesión</a></li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <a href="{% url 'IniciarS' %}" class="btn btn-primary me-2">Iniciar Sesión</a>
+                    <a href="{% url 'RegistroU' %}" class="btn btn-outline-primary">Regístrate</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Problemas Comunes</h1>
+
+        <div class="problem">
+            <h2>Problemas al iniciar sesión</h2>
+            <div class="solution">
+                <p>Verifica que el RUT y la contraseña ingresados sean correctos. Asegúrate de que las mayúsculas estén desactivadas y de que no haya espacios adicionales al escribir tu contraseña. Si olvidaste tu contraseña, puedes restablecerla en la página de inicio de sesión seleccionando la opción "¿Olvidaste tu contraseña?".</p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <h2>Problemas con el pago</h2>
+            <div class="solution">
+                <p>Si encuentras dificultades al realizar el pago, verifica que los datos de tu tarjeta sean correctos y que la cuenta tenga saldo suficiente. Recomendamos probar con un método de pago diferente o intentar de nuevo más tarde. Si el problema persiste, contacta a tu banco o a nuestro equipo de soporte para obtener ayuda adicional.</p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <h2>Problemas con el registro</h2>
+            <div class="solution">
+                <p>Si tienes problemas al registrarte, verifica que todos los campos estén completados correctamente y que el formato del RUT y correo electrónico sea el adecuado. Si el sistema indica que el correo o RUT ya están registrados, intenta iniciar sesión o restablecer la contraseña.</p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <h2>La página carga lento</h2>
+            <div class="solution">
+                <p>Si la página tarda en cargar, intenta verificar tu conexión a internet o cambiar a una red diferente. También puedes probar limpiando la caché de tu navegador. Si el problema continúa, prueba acceder desde otro navegador o dispositivo.</p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <h2>Otros problemas</h2>
+            <div class="solution">
+                <p>Para otros problemas técnicos, te sugerimos verificar que tu navegador esté actualizado y que no haya extensiones o bloqueadores de anuncios que interfieran con la plataforma. Si el problema persiste, contáctanos directamente a través de nuestro sistema de soporte.</p>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

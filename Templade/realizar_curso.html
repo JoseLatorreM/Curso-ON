@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Curso</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            padding: 0.25rem 0.5rem;
+            height: 60px;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1rem;
+            color: #0056b3 !important;
+        }
+
+        .navbar-nav .nav-link {
+            color: #495057 !important;
+            font-size: 0.875rem;
+            padding: 0.1rem 0.1rem;
+        }
+
+        .navbar-toggler {
+            padding: 0.2rem 0.5rem;
+        }
+
+        .dropdown-menu {
+            right: 0;
+            left: auto;
+        }
+
+        .dropdown-toggle {
+            padding: 0.25rem 0.6rem;
+            font-size: 0.875rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 80px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            font-size: 1.25rem;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            background-color: #dbeafe;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        li img {
+            max-width: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        li div {
+            flex: 1;
+        }
+
+        li strong {
+            font-size: 1rem;
+            color: #333;
+        }
+
+        li p {
+            font-size: 0.875rem;
+            color: #475569;
+            margin: 5px 0;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            color: #ffffff;
+            background-color: #1e3a8a;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        a:hover {
+            background-color: #1d4ed8;
+            transform: scale(1.05);
+        }
+
+        p {
+            text-align: center;
+            color: #475569;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'MenuUsuario' %}">Curso O-N</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'mostrar_cursos' %}">Cursos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'Soporte' %}">Soporte</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    {% if request.session.user_name and request.session.user_lastname %}
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ request.session.user_name }} {{ request.session.user_lastname }}
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="{% url 'cerrar_sesion' %}">Cerrar sesión</a></li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <a href="{% url 'IniciarS' %}" class="btn btn-primary me-2">Iniciar Sesión</a>
+                    <a href="{% url 'RegistroU' %}" class="btn btn-outline-primary">Regístrate</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <h2>Unidades del Curso</h2>
+        {% if unidades %}
+            <ul>
+                {% for unidad in unidades %}
+                    <li>
+                        <img src="{{ unidad.imagen.url }}" alt="Imagen de {{ unidad.nombre }}">
+                        <div>
+                            <strong>{{ unidad.nombre }}</strong>
+                            <p>{{ unidad.contenido }}</p>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay unidades registradas para este curso.</p>
+        {% endif %}
+
+        <a href="{% url 'mostrar_cursos' %}">Volver</a>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso O-N</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            color: #0056b3 !important;
+        }
+        .navbar-nav .nav-link {
+            color: #495057 !important;
+        }
+        .hero-section {
+            background-color: #dbeafe;
+            padding: 50px 20px;
+            text-align: center;
+        }
+        .hero-section h1 {
+            color: #1e3a8a;
+        }
+        .hero-section p {
+            color: #475569;
+        }
+        .footer {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .dropdown-menu {
+            right: 0;
+            left: auto;
+        }
+        .about-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .about-text {
+            font-size: 1.1rem;
+            color: #475569;
+            margin-left: 30px;
+        }
+        .about-image {
+            width: 50%;
+            max-width: 500px;
+            height: auto;
+        }
+        @media (max-width: 768px) {
+            .about-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            .about-text {
+                margin-left: 0;
+                margin-top: 20px;
+            }
+            .about-image {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Curso O-N</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'mostrar_cursos' %}">Cursos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'Soporte' %}">Soporte</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    {% if request.session.user_name and request.session.user_lastname %}
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ request.session.user_name }} {{ request.session.user_lastname }}
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="{% url 'cerrar_sesion' %}">Cerrar sesión</a></li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <a href="{% url 'IniciarS' %}" class="btn btn-primary me-2">Iniciar Sesión</a>
+                    <a href="{% url 'RegistroU' %}" class="btn btn-outline-primary">Regístrate</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+    <section class="hero-section">
+        <h1>Bienvenido a Curso O-N</h1>
+        <p>Explora nuestros cursos diseñados para llevar tu aprendizaje al siguiente nivel.</p>
+        <a href="{% url 'mostrar_cursos' %}" class="btn btn-primary">Ver Cursos</a>
+    </section>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Sobre Nosotros</h2>
+        <div class="about-section">
+            <img src="media/imginicio/Portada.png" alt="Portada" class="about-image">
+            <div class="about-text">
+                <p>En **Curso O-N**, ofrecemos cursos flexibles y actualizados para ayudarte a aprender a tu ritmo. Nuestro objetivo es proporcionarte contenido de calidad que potencie tus habilidades y transforme tu futuro. ¡Únete y empieza a aprender hoy mismo!</p>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">¿Cómo Aseguramos tu Aprendizaje?</h2>
+        <div class="about-section">
+            <div class="about-text">
+                <p>Nuestros cursos están diseñados para adaptarse a tu tiempo, permitiéndote aprender a tu ritmo. Sabemos que no siempre es posible estar conectado todo el día, por eso ofrecemos recursos atractivos, imágenes y ejemplos claros y concisos. Sin embargo, tu compromiso es clave: dedicar unas horas al día será esencial para aprovechar al máximo el aprendizaje.</p>
+            </div>
+            <img src="media/imginicio/Portada2.png" alt="Portada" class="about-image">
+        </div>
+    </div>
+    <footer class="footer mt-5">
+        <p>&copy; 2024 Curso O-N.</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<head>
+    <title>Modificar Curso</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #99c4c586;
+        }
+
+        form {
+            background-color: #fff;
+            width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        select {
+            background-color: #f9f9f9;
+            color: #333;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        select:hover {
+            border-color: #aaa;
+        }
+
+        button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .secondary-button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .secondary-button:hover {
+            background-color:  #218838;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: #0056b3 !important;
+        }
+
+        .navbar-nav .nav-link {
+            color: #495057 !important;
+        }
+
+        .dropdown-menu {
+            right: 0;
+            left: auto;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'MenuUsuario'%}">Curso O-N</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'mostrar_cursos' %}">Cursos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'Soporte' %}">Soporte</a>
+                </li>
+            </ul>
+            <div class="d-flex">
+                {% if request.session.user_name and request.session.user_lastname %}
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ request.session.user_name }} {{ request.session.user_lastname }}
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="{% url 'cerrar_sesion' %}">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+                {% else %}
+                <a href="{% url 'IniciarS' %}" class="btn btn-primary me-2">Iniciar Sesión</a>
+                <a href="{% url 'RegistroU' %}" class="btn btn-outline-primary">Regístrate</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="curso_id" value="{{ curso.id }}">
+    <br><br><br>
+    <h2 class="center">Modificar Curso</h2>
+    
+    <label for="id_ImagenPortada">Imagen de Portada</label>
+    <input type="file" id="id_ImagenPortada" name="ImagenPortada" accept="image/*">
+    
+    <label for="id_NombreCur">Nombre del Curso</label>
+    <input type="text" id="id_NombreCur" name="NCurso" value="{{ curso.NCurso }}" required>
+    
+    <label for="id_Autor">Autor del Curso</label>
+    <input type="text" id="id_Autor" name="Autor" value="{{ curso.Autor }}" required>
+    
+    <label for="id_Duracion">Duración del Curso</label>
+    <input type="text" id="id_Duracion" name="Duracion" value="{{ curso.Duracion }}" required>
+    
+    <label for="id_Descripcion">Descripción del Curso</label>
+    <input type="text" id="id_Descripcion" name="Descripcion" value="{{ curso.Descripcion }}" required>
+    
+    <label for="id_Total">Valor Total</label>
+    <input type="text" id="id_Total" name="Total" value="{{ curso.Total }}" required>
+    
+    <label for="id_Dificultad">Nivel de Dificultad</label>
+    <select id="id_Dificultad" name="Dificultad" required>
+        <option value="Facil" {% if curso.Dificultad == "Facil" %}selected{% endif %}>Fácil</option>
+        <option value="Media" {% if curso.Dificultad == "Media" %}selected{% endif %}>Media</option>
+        <option value="Dificil" {% if curso.Dificultad == "Dificil" %}selected{% endif %}>Difícil</option>
+    </select>
+    
+    <label for="id_Categoria">Categoría</label>
+    <select id="id_Categoria" name="Categoria" required>
+        <option value="desarrollo" {% if curso.Categoria == "desarrollo" %}selected{% endif %}>Desarrollo</option>
+        <option value="diseño" {% if curso.Categoria == "diseño" %}selected{% endif %}>Diseño</option>
+        <option value="negocios" {% if curso.Categoria == "negocios" %}selected{% endif %}>Negocios</option>
+        <option value="marketing" {% if curso.Categoria == "marketing" %}selected{% endif %}>Marketing</option>
+        <option value="programacion" {% if curso.Categoria == "programacion" %}selected{% endif %}>Programación</option>
+        <option value="cocina" {% if curso.Categoria == "cocina" %}selected{% endif %}>Cocina</option>
+    </select>
+    
+    <label for="id_DesDet">Descripción Detallada</label>
+    <textarea id="id_DesDet" name="DesDet" placeholder="Detalla tu curso" rows="5" cols="50" required style="resize: vertical;">{{ curso.DesDet }}</textarea>
+
+    <label for="id_NumUnidades">Número de Unidades</label>
+    <select id="id_NumUnidades" name="NumUnidades" onchange="generarUnidades()" required>
+        <option value="1" {% if curso.NumUnidades == 1 %}selected{% endif %}>1 Unidad</option>
+        <option value="2" {% if curso.NumUnidades == 2 %}selected{% endif %}>2 Unidades</option>
+        <option value="3" {% if curso.NumUnidades == 3 %}selected{% endif %}>3 Unidades</option>
+    </select>
+
+<div id="unidad-container">
+    {% for unidad in unidades %}
+    <div>
+        <h3>Unidad {{ forloop.counter }}</h3>
+        <label for="unidad{{ forloop.counter }}_imagen">Imagen de la Unidad</label>
+        <input type="file" id="unidad{{ forloop.counter }}_imagen" name="unidades[{{ forloop.counter }}][imagen]" accept="image/*">
+        
+        <label for="unidad{{ forloop.counter }}_nombre">Nombre de la Unidad</label>
+        <input type="text" id="unidad{{ forloop.counter }}_nombre" name="unidades[{{ forloop.counter }}][nombre]" value="{{ unidad.nombre }}" required>
+
+        <label for="unidad{{ forloop.counter }}_contenido">Contenido de la Unidad</label>
+        <textarea id="unidad{{ forloop.counter }}_contenido" name="unidades[{{ forloop.counter }}][contenido]" rows="4" required>{{ unidad.contenido }}</textarea>
+    </div>
+    {% endfor %}
+</div> 
+    <div class="center">
+        <button type="submit">Guardar Cambios</button><br><br>
+        <a href="{% url 'mostrar_cursos' %}" class="btn btn-outline-primary secondary-button">Volver</a>
+    </div>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function generarUnidades() {
+        var numUnidades = document.getElementById('id_NumUnidades').value;
+        var container = document.getElementById('unidad-container');
+        container.innerHTML = '';
+
+        for (var i = 1; i <= numUnidades; i++) {
+            var unidadDiv = document.createElement('div');
+            unidadDiv.innerHTML = `
+                <h3>Unidad ${i}</h3>
+                <label for="unidad${i}_imagen">Imagen de la Unidad</label>
+                <input type="file" id="unidad${i}_imagen" name="unidades[${i}][imagen]" accept="image/*" required>
+                <label for="unidad${i}_nombre">Nombre de la Unidad</label>
+                <input type="text" id="unidad${i}_nombre" name="unidades[${i}][nombre]" required>
+                <label for="unidad${i}_contenido">Contenido de la Unidad</label>
+                <textarea id="unidad${i}_contenido" name="unidades[${i}][contenido]" rows="4" required></textarea>
+            `;
+            container.appendChild(unidadDiv);
+        }
+    }
+</script>
+</body>
+</html>

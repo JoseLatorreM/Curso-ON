@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Inicio Sesión{% endblock %}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .registro-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input[type="submit"] {
+            background-color: #a3d2ca;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .mensaje a {
+            color: #6b9080;
+            font-weight: bold;
+        }
+    </style>
+
+    <script>
+        function validarRut(rut) {
+            const regexRut = /^[0-9]{1,8}-[0-9kK]{1}$/;
+            return regexRut.test(rut);
+        }
+
+        function validarContraseña(password) {
+            const regexPassword = /^[a-zA-Z0-9!@#$%^&*()_+={}\[\]|\\:;'",.<>?/-]+$/;
+            return regexPassword.test(password);
+        }
+
+        function validarFormulario(event) {
+            var rut = document.getElementById('rut').value;
+            var password = document.getElementById('password').value;
+
+            if (!validarRut(rut)) {
+                alert("Por favor, ingresa un Rut válido (sin puntos y con guion).");
+                event.preventDefault();
+                return false;
+            }
+
+            if (!validarContraseña(password)) {
+                alert("La contraseña no puede contener espacios.");
+                event.preventDefault();
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <div class="registro-container">
+        <h2>Iniciar Sesión</h2>
+        <form action="{% url 'login_view' %}" method="POST" onsubmit="return validarFormulario(event)">
+            {% csrf_token %}
+            <label for="rut">Rut (Sin puntos y con guion)</label>
+            <input type="text" id="rut" name="rut" placeholder="Ingresa tu Rut" required>
+        
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" required>
+        
+            <input type="submit" value="Iniciar Sesión">
+        </form>
+
+        <div class="mensaje">
+            <p>¿No tienes una cuenta? <a href="{% url 'RegistroU' %}">Registrate</a></p>
+            <p>Volver al Menú Principal <a href="{% url 'MenuUsuario' %}">Menú Principal</a></p>
+        </div>
+    </div>
+</body>
+</html>

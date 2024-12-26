@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<head>
+    <title>Agregar Curso</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #99c4c586;
+        }
+        form {
+            background-color: #fff;
+            width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        select {
+            background-color: #f9f9f9;
+            color: #333;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+        select:hover {
+            border-color: #aaa;
+        }
+        button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .center {
+            text-align: center;
+        }
+        .secondary-button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .secondary-button:hover {
+            background-color:  #218838;
+        }
+        .navbar-brand {
+        font-weight: bold;
+        color: #0056b3 !important;
+    }
+    .navbar-nav .nav-link {
+        color: #495057 !important;
+    }
+    .dropdown-menu {
+        right: 0;
+        left: auto;
+    }
+    </style>
+    <script>
+function generarUnidades() {
+    const container = document.getElementById("unidad-container");
+    container.innerHTML = "";
+    const numUnidades = document.getElementById("id_NumUnidades").value;
+    for (let i = 1; i <= numUnidades; i++) {
+        const div = document.createElement("div");
+        div.innerHTML = `
+            <h3>Unidad ${i}</h3>
+            <label for="unidad${i}_imagen">Imagen de la Unidad</label>
+            <input type="file" id="unidad${i}_imagen" name="unidades[${i}][imagen]" accept="image/*" required>
+
+
+            <label for="unidad${i}_nombre">Nombre de la Unidad</label>
+            <input type="text" id="unidad${i}_nombre" name="unidades[${i}][nombre]" placeholder="Nombre de la Unidad ${i}" required>
+
+            <label for="unidad${i}_contenido">Contenido de la Unidad</label>
+            <textarea id="unidad${i}_contenido" name="unidades[${i}][contenido]" placeholder="Contenido de la Unidad ${i}" rows="4" required></textarea>
+        `;
+        container.appendChild(div);
+    }
+}
+        function validarFormulario() {
+        var nombre = document.getElementById("id_NombreCur").value;
+        nombre = nombre.replace(/^\s+|\s+$/g, '');
+        var autor = document.getElementById("id_Autor").value.trim();
+        var duracion = document.getElementById("id_Duracion").value.trim();
+        var descripcion = document.getElementById("id_Descripcion").value.trim();
+        var descripcionDetallada = document.getElementById("id_DesDet").value.trim();
+        var unidades = document.getElementById("id_NumUnidades").value;
+        var imagen = document.getElementById("id_ImagenPortada").files[0];
+        if (nombre === "" || autor === "" || descripcion === "") {
+            alert("Los campos 'Nombre del Curso', 'Autor' y 'Descripción' no pueden estar vacíos o contener solo espacios.");
+            return false;
+        }
+        if (!/^\d+$/.test(duracion)) {
+            alert("El campo 'Duración' debe contener solo números.");
+            return false;
+        }
+        if (descripcionDetallada === "") {
+            alert("La 'Descripción Detallada' no puede estar vacía.");
+            return false;
+        }
+        var unidadContainer = document.getElementById("unidad-container");
+        var unidadesValidas = true;
+        for (let i = 1; i <= unidades; i++) {
+            var unidadNombre = document.getElementById(`unidad${i}_nombre`).value.trim();
+            var unidadContenido = document.getElementById(`unidad${i}_contenido`).value.trim();
+            if (unidadNombre === "" || unidadContenido === "") {
+                alert(`La Unidad ${i} debe tener un nombre y un contenido.`);
+                unidadesValidas = false;
+                break;
+            }
+        }
+        if (!unidadesValidas) {
+            return false;
+        }
+        if (!imagen) {
+            alert("Debe seleccionar una imagen de portada.");
+            return false;
+        }
+        var tiposPermitidos = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!tiposPermitidos.includes(imagen.type)) {
+            alert("El archivo debe ser una imagen (JPG, PNG, GIF).");
+            return false;
+        }
+
+        return true;
+    }
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'MenuUsuario'%}">Curso O-N</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'mostrar_cursos' %}">Cursos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'Soporte' %}">Soporte</a>
+                </li>
+            </ul>
+            <div class="d-flex">
+                {% if request.session.user_name and request.session.user_lastname %}
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ request.session.user_name }} {{ request.session.user_lastname }}
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="{% url 'cerrar_sesion' %}">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+                {% else %}
+                <a href="{% url 'IniciarS' %}" class="btn btn-primary me-2">Iniciar Sesión</a>
+                <a href="{% url 'RegistroU' %}" class="btn btn-outline-primary">Regístrate</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+        <form action="{% url 'GuardarCursos' %}" method="post" enctype="multipart/form-data" onsubmit="return validarFormulario()">
+        {% csrf_token %} <br><br><br>
+        <h2 class="center">Agregar Cursos</h2>
+        <label for="id_ImagenPortada">Imagen de Portada</label>
+        <input type="file" id="id_ImagenPortada" name="ImagenPortada" accept="image/*" required>
+        <label for="id_NombreCur">Nombre del Curso</label>
+        <input type="text" id="id_NombreCur" name="NCurso" placeholder="Nombre del Curso" required>
+        <label for="id_Autor">Autor del Curso</label>
+        <input type="text" id="id_Autor" name="Autor" placeholder="Autor del Curso" required>
+        <label for="id_Duracion">Duración del Curso (en semanas)</label>
+        <input type="text" id="id_Duracion" name="Duracion" placeholder="Duración del Curso" required>
+        <label for="id_Descripcion">Descripción breve del Curso</label>
+        <input type="text" id="id_Descripcion" name="Descripcion" placeholder="Descripción del Curso" required>
+        <label for="id_Total">Valor Total (peso chileno)</label>
+        <input type="text" id="id_Total" name="Total" placeholder="Valor Total" required>
+        <label for="id_Dificultad">Nivel de Dificultad</label>
+        <select id="id_Dificultad" name="Dificultad" required>
+            <option value="">Seleccione una dificultad</option>
+            <option value="Facil">Fácil</option>
+            <option value="Media">Media</option>
+            <option value="Dificil">Difícil</option>
+        </select>
+        <label for="id_Categoria">Categoría</label>
+        <select id="id_Categoria" name="Categoria" required>
+            <option value="">Seleccione una categoría</option>
+            <option value="desarrollo">Desarrollo</option>
+            <option value="diseño">Diseño</option>
+            <option value="negocios">Negocios</option>
+            <option value="marketing">Marketing</option>
+            <option value="programacion">Programación</option>
+            <option value="programacion">Cocina</option>
+            <option value="programacion">Finanzas e Inversiones</option>
+        </select>
+        <label for="id_DesDet">Descripción Detallada</label>
+        <textarea id="id_DesDet" name="DesDet" placeholder="Detalla tu curso" rows="5" cols="50" required style="resize: vertical;"></textarea>
+        <label for="id_NumUnidades">Número de Unidades</label>
+        <select id="id_NumUnidades" name="NumUnidades" onchange="generarUnidades()" required>
+            <option value="">Seleccione el número de unidades</option>
+            <option value="1">1 Unidad</option>
+            <option value="2">2 Unidades</option>
+            <option value="3">3 Unidades</option>
+        </select>
+        <div id="unidad-container"></div>
+        <div class="center">
+            <button type="submit">Grabar Datos</button><br><br>
+            <a href="{% url 'mostrar_cursos' %}" class="secondary-button">Volver a los Cursos</a>
+        </div>
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
