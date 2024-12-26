@@ -1,0 +1,40 @@
+
+Manual de Instalación
+
+Este manual proporciona las instrucciones necesarias para instalar y configurar el proyecto en diferentes dispositivos (computadoras). Sigue los pasos detallados para asegurar que el entorno esté configurado correctamente y el proyecto funcione como se espera
+
+Requisitos Previos a descargar · Python: https://www.python.org/downloads/ · Django: https://www.djangoproject.com/download/ · Xampp: https://www.apachefriends.org/es/download.html · Boostrap (Opcional): https://getbootstrap.com/docs/5.3/getting-started/download/ · Visual Studio Code: https://code.visualstudio.com/Download
+
+· Descargar el proyecto .zip: Este se encuentra en la carpeta enviada por el ambiente de aprendizaje
+
+Crear la Base de Datos
+
+· Abre XAMPP y asegúrate de iniciar los servicios de Apache y MySQL
+
+· Accede a phpMyAdmin a través de http://localhost/phpmyadmin/
+
+· Crea una nueva base de datos con el nombre: bd-cursoon
+
+Realizar Migraciones
+
+· Debes realizar las migraciones para crear las tablas en la base de datos. Ejecuta los siguientes comandos en la terminal:
+
+Ø python manage.py makemigrations
+
+Ø python manage.py migrate
+
+Esto creará automáticamente las tablas necesarias en la base de datos que has configurado
+
+Crear un Superusuario para Django Admin
+
+· Para poder gestionar la base de datos a través de la interfaz de administración de Django, necesitarás crear un superusuario. Ejecuta el siguiente comando:
+
+Ø python manage.py createsuperuser
+
+Completa los campos solicitados, como el nombre de usuario, correo electrónico y contraseña
+
+Iniciar el Proyecto
+
+· Para iniciar el servidor de desarrollo de Django, ejecuta el siguiente comando en la terminal:
+
+Ø python manage.py runserver Accede al proyecto en tu navegador a través de http://127.0.0.1:8000/ Para acceder al panel de administración de Django, ve a http://127.0.0.1:8000/admin/ e ingresa con las credenciales del superusuario que creaste
